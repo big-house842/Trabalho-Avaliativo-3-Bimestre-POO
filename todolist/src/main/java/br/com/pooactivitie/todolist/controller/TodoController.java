@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+@RestController // Define que essa classe é um controlador REST
+
 @RequestMapping("/api/tarefas")
 public class TodoController {
     
@@ -30,8 +31,6 @@ public class TodoController {
     
     @PostMapping
     public List<Todo> create(@RequestBody @Valid Todo todo) {
-        // Remove apenas o ID se for enviado (gerado automaticamente)
-        // NÃO remove dataCriacao e status - eles serão gerados automaticamente
         todo.setId(null);
         return todoService.create(todo);
     }

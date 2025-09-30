@@ -19,12 +19,12 @@ public class TodoService {
     }
 
     public List<Todo> create(Todo todo) {
-        // Garantir que o status seja A_FAZER se não for fornecido
+        // Garantir que o status seja A_FAZER, se não for fornecido
         if (todo.getStatus() == null) {
             todo.setStatus(Status.A_FAZER);
         }
         
-        // Se dataCriacao não foi definida no construtor, definir agora
+        // Se dataCriacao não foi definida, definir agora
         if (todo.getDataCriacao() == null) {
             todo.setDataCriacao(java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }

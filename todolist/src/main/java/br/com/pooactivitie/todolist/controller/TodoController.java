@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.pooactivitie.todolist.entity.Status;
 import br.com.pooactivitie.todolist.entity.Todo;
 import br.com.pooactivitie.todolist.service.TodoService;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,51 +16,53 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-
 @RequestMapping("/api/tarefas")
-
 public class TodoController {
     
     private TodoService todoService;
+    
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
     
     @PostMapping
-    List<Todo> create(Todo todo){
+    public List<Todo> create(@RequestBody @Valid Todo todo) {
+        // Remove apenas o ID se for enviado (gerado automaticamente)
+        // NÃO remove dataCriacao e status - eles serão gerados automaticamente
+        todo.setId(null);
         return todoService.create(todo);
     }
 
     @GetMapping
-    List<Todo> list(){
+    public List<Todo> list() {
         return todoService.list();
     }
 
-    @GetMapping("{id}")
-    List<Todo> listById(@PathVariable("id") Long id){
+    @GetMapping("/{id}")
+    public Todo listById(@PathVariable("id") Long id) {
         return todoService.listById(id);
     }
 
-    @GetMapping("importancia")
-    List<Todo> listByImportancia(@PathVariable("importancia") boolean importancia){
+    @GetMapping("/importancia")
+    public List<Todo> listByImportancia(@RequestParam("importancia") boolean importancia) {
         return todoService.listByImportancia(importancia);
     }
 
-    @GetMapping("status")
-    List<Todo> listByStatus(@PathVariable("status") String status){
+    @GetMapping("/status")
+    public List<Todo> listByStatus(@RequestParam("status") Status status) {
         return todoService.listByStatus(status);
     }
 
-    @PatchMapping
-    List<Todo> parcialUpdate(@RequestBody Long id){
-        return todoService.parcialUpdate(id);
-    }//???????????????????????????????
+    @PatchMapping("/{id}")
+    public List<Todo> parcialUpdate(@PathVariable("id") Long id, @RequestBody Todo todoAtualizado) {
+        return todoService.parcialUpdate(id, todoAtualizado);
+    }
 
-    @DeleteMapping("{id}")
-    List<Todo> delete(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public List<Todo> delete(@PathVariable("id") Long id) {
         return todoService.delete(id);
     }
 }

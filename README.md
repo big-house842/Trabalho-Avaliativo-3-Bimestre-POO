@@ -1,2 +1,2 @@
-# Trabalho-Avaliativo-3-Bimestre-POO
-Trabalho criação de Rest API com bootstrap. Feito por Renan e Gabriel.
+Usa-se o banco de dados H2, que armazena na memória RAM
+Descobrir o porquê de métodos duplicados
